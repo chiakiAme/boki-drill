@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ストーリー仕訳ドリル Pro</title>
   <style>
+    *, *::before, *::after {
+  box-sizing: border-box;
+}
     :root {
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
@@ -42,6 +45,7 @@
       background: #f1f5f9;
       border-radius: 12px;
       padding: 16px;
+      width: 100%;
       margin-bottom: 20px;
     }
     .story-text {
@@ -54,6 +58,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      width: 100%;
       margin-bottom: 16px;
     }
     @media (max-width: 520px) {
