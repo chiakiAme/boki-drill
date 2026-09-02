@@ -265,16 +265,17 @@ function init() {
   loadQuestion(0);
 }
 
-function createRowHTML(side, account = "", amount = "") {
+function createRowHTML(account = "", amount = "") {
   const div = document.createElement("div");
   div.className = "entry-row";
   div.innerHTML = `
-    <input type="text" placeholder="科目" value="${account}">
-    <input type="number" placeholder="金額" value="${amount}">
-    <button class="btn-remove" onclick="removeRow(this, '${side}')">✕</button>
+    <input type="text" placeholder="科目" value="${account}" inputmode="text">
+    <input type="text" inputmode="numeric" pattern="[0-9]*" placeholder="金額" value="${amount}">
+    <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
   `;
   return div;
 }
+
 
 function addRow(side, account = "", amount = "") {
   const container = document.getElementById(`${side}-rows`);
