@@ -276,10 +276,10 @@ function createRowHTML(account = "", amount = "") {
   return div;
 }
 
-
-function addRow(side, account = "", amount = "") {
+function addRow(side) {
   const container = document.getElementById(`${side}-rows`);
-  container.appendChild(createRowHTML(side, account, amount)); }
+  container.appendChild(createRowHTML("", ""));
+}
 
 function removeRow(button, side) {
   const container = document.getElementById(`${side}-rows`);
