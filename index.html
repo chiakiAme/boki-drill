@@ -6,15 +6,15 @@
   <title>ストーリー仕訳ドリル Pro</title>
   <style>
     *, *::before, *::after {
-  box-sizing: border-box;
-}
+      box-sizing: border-box;
+    }
     :root {
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
       --bg: #f8fafc;
       --card-bg: #ffffff;
       --text: #1e293b;
-      --border: #e2e8f0;
+      --border: #cbd5e1;
       --danger: #ef4444;
       --success: #10b981;
     }
@@ -45,8 +45,8 @@
       background: #f1f5f9;
       border-radius: 12px;
       padding: 16px;
-      width: 100%;
       margin-bottom: 20px;
+      width: 100%;
     }
     .story-text {
       font-size: 1.05rem;
@@ -61,7 +61,7 @@
       width: 100%;
       margin-bottom: 16px;
     }
-    @media (max-width: 520px) {
+    @media (max-width: 560px) {
       .split-container {
         grid-template-columns: 1fr;
       }
@@ -71,6 +71,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 12px;
+      width: 100%;
     }
     .side-title {
       font-weight: bold;
@@ -84,39 +85,44 @@
       gap: 6px;
       margin-bottom: 8px;
       align-items: center;
+      width: 100%;
     }
     .entry-row input[type="text"] {
       flex: 1.2;
       width: 0;
-      padding: 8px;
+      padding: 8px 6px;
       font-size: 0.9rem;
       border: 1px solid var(--border);
       border-radius: 6px;
-      min-width:0;
+      min-width: 0;
     }
     .entry-row input[type="number"] {
       flex: 1;
       width: 0;
-      padding: 8px;
+      padding: 8px 6px;
       font-size: 0.9rem;
       border: 1px solid var(--border);
       border-radius: 6px;
       min-width: 0;
     }
     .btn-remove {
-      background: none;
-      border: none;
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
       color: var(--danger);
-      font-size: 1.1rem;
+      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      padding: 4px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      line-height: 1;
+      flex-shrink: 0;
     }
     .btn-add {
       width: 100%;
       background: #e2e8f0;
       border: 1px dashed #94a3b8;
       border-radius: 6px;
-      padding: 6px;
+      padding: 8px;
       font-size: 0.85rem;
       cursor: pointer;
       font-weight: 600;
@@ -141,6 +147,7 @@
       display: none;
       font-size: 0.95rem;
       line-height: 1.5;
+      width: 100%;
     }
     .result-box.correct {
       background: #dcfce7;
@@ -156,6 +163,7 @@
       display: flex;
       justify-content: space-between;
       margin-top: 16px;
+      width: 100%;
     }
     .nav-btn {
       background: #64748b;
@@ -165,10 +173,27 @@
       padding: 8px 16px;
       cursor: pointer;
     }
+    .clear-card {
+      text-align: center;
+      padding: 30px 16px;
+      display: none;
+    }
+    .clear-card h2 {
+      font-size: 1.5rem;
+      color: #1e293b;
+      margin-bottom: 12px;
+    }
+    .clear-card p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #475569;
+      margin-bottom: 24px;
+    }
     details {
       margin-top: 24px;
       border-top: 1px solid var(--border);
       padding-top: 12px;
+      width: 100%;
     }
     textarea {
       width: 100%;
@@ -179,7 +204,6 @@
       padding: 8px;
       font-family: monospace;
       font-size: 0.8rem;
-      box-sizing: border-box;
     }
   </style>
 </head>
@@ -188,45 +212,52 @@
 <div class="container">
   <h1>ストーリー仕訳ドリル Pro</h1>
 
-  <div class="card">
-    <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 6px;" id="q-number">第 1 問</div>
-    <p class="story-text" id="story-display">読み込み中...</p>
-  </div>
-
-  <div class="split-container">
-    <!-- 借方 (Debit) -->
-    <div class="side-column">
-      <div class="side-title">借方（Debit）</div>
-      <div id="debit-rows"></div>
-      <button class="btn-add" onclick="addRow('debit')">＋ 行を追加</button>
+  <!-- 問題出題エリア -->
+  <div id="quiz-area">
+    <div class="card">
+      <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 6px;" id="q-number">第 1 問</div>
+      <p class="story-text" id="story-display">読み込み中...</p>
     </div>
 
-    <!-- 貸方 (Credit) -->
-    <div class="side-column">
-      <div class="side-title">貸方（Credit）</div>
-      <div id="credit-rows"></div>
-      <button class="btn-add" onclick="addRow('credit')">＋ 行を追加</button>
+    <div class="split-container">
+      <div class="side-column">
+        <div class="side-title">借方（Debit）</div>
+        <div id="debit-rows"></div>
+        <button type="button" class="btn-add" onclick="addRow('debit')">＋ 行を追加</button>
+      </div>
+
+      <div class="side-column">
+        <div class="side-title">貸方（Credit）</div>
+        <div id="credit-rows"></div>
+        <button type="button" class="btn-add" onclick="addRow('credit')">＋ 行を追加</button>
+      </div>
+    </div>
+
+    <button type="button" class="btn-submit" onclick="checkAnswer()">判定する</button>
+    <div id="result-display" class="result-box"></div>
+
+    <div class="nav-buttons">
+      <button type="button" class="nav-btn" onclick="prevQuestion()">◀ 前の問題</button>
+      <button type="button" class="nav-btn" id="next-btn" onclick="nextQuestion()">次の問題 ▶</button>
     </div>
   </div>
 
-  <button class="btn-submit" onclick="checkAnswer()">判定する</button>
-
-  <div id="result-display" class="result-box"></div>
-
-  <div class="nav-buttons">
-    <button class="nav-btn" onclick="prevQuestion()">◀ 前の問題</button>
-    <button class="nav-btn" onclick="nextQuestion()">次の問題 ▶</button>
+  <!-- お疲れ様・クリア画面エリア -->
+  <div id="clear-area" class="clear-card card">
+    <h2>🎉 お疲れ様でした！</h2>
+    <p id="score-text">全問の演習が完了しました！</p>
+    <button type="button" class="btn-submit" onclick="restartQuiz()">もう一度最初から挑戦する 🔄</button>
   </div>
 
+  <!-- 問題データ読み込み -->
   <details>
     <summary>⚙️ 新しいストーリー問題を読み込む</summary>
     <textarea id="json-input" placeholder="JSONコードを貼り付けてください"></textarea>
-    <button class="btn-submit" style="background:#059669; margin-top:6px;" onclick="loadCustomData()">問題を反映する</button>
+    <button type="button" class="btn-submit" style="background:#059669; margin-top:6px;" onclick="loadCustomData()">問題を反映する</button>
   </details>
 </div>
 
 <script>
-// デフォルト問題（簿記2級の複合仕訳サンプル含む）
 const defaultData = [
   {
     story: "【簿記2級・固定資産の売却】備品（取得原価 50,000円、減価償却累計額 35,000円・間接法）を 12,000円で売却し、代金は後日受取（未収入金）とした。",
@@ -239,17 +270,13 @@ const defaultData = [
       { account: "備品", amount: 50000 }
     ],
     explanation: "備品の帳簿価額は 50,000 - 35,000 = 15,000円です。これを12,000円で売却したため、差額の3,000円が固定資産売却損（費用）となります。"
-  },
-  {
-    story: "【簿記3級・単一仕訳】商品 10,000円を掛けで仕入れた。",
-    debit: [{ account: "仕入", amount: 10000 }],
-    credit: [{ account: "買掛金", amount: 10000 }],
-    explanation: "1対1の仕訳です。費用（仕入）の発生で借方、負債（買掛金）の増加で貸方に記入します。"
   }
 ];
 
 let questions = [];
 let currentIndex = 0;
+let correctCount = 0;
+let answeredQuestions = new Set();
 
 function init() {
   const saved = localStorage.getItem("boki_pro_drill_data");
@@ -262,6 +289,15 @@ function init() {
   } else {
     questions = defaultData;
   }
+  restartQuiz();
+}
+
+function restartQuiz() {
+  currentIndex = 0;
+  correctCount = 0;
+  answeredQuestions.clear();
+  document.getElementById("quiz-area").style.display = "block";
+  document.getElementById("clear-area").style.display = "none";
   loadQuestion(0);
 }
 
@@ -269,8 +305,8 @@ function createRowHTML(account = "", amount = "") {
   const div = document.createElement("div");
   div.className = "entry-row";
   div.innerHTML = `
-    <input type="text" placeholder="科目" value="${account}" inputmode="text">
-    <input type="text" inputmode="numeric" pattern="[0-9]*" placeholder="金額" value="${amount}">
+    <input type="text" placeholder="科目" value="${account}" lang="ja">
+    <input type="number" placeholder="金額" value="${amount}">
     <button type="button" class="btn-remove" onclick="removeRow(this)">✕</button>
   `;
   return div;
@@ -281,10 +317,11 @@ function addRow(side) {
   container.appendChild(createRowHTML("", ""));
 }
 
-function removeRow(button, side) {
-  const container = document.getElementById(`${side}-rows`);
+function removeRow(button) {
+  const row = button.closest(".entry-row");
+  const container = row.parentElement;
   if (container.children.length > 1) {
-    button.parentElement.remove();
+    row.remove();
   } else {
     alert("最低1行は必要です。");
   }
@@ -297,7 +334,6 @@ function loadQuestion(index) {
   document.getElementById("q-number").textContent = `第 ${index + 1} 問 / 全 ${questions.length} 問`;
   document.getElementById("story-display").textContent = questions[index].story;
 
-  // フォーム初期化（必ず借方1行・貸方1行の空欄を用意）
   document.getElementById("debit-rows").innerHTML = "";
   document.getElementById("credit-rows").innerHTML = "";
   addRow("debit");
@@ -306,6 +342,14 @@ function loadQuestion(index) {
   const resultBox = document.getElementById("result-display");
   resultBox.style.display = "none";
   resultBox.className = "result-box";
+
+  // 最終問の場合、ボタンの文言を「結果を見る」に変更
+  const nextBtn = document.getElementById("next-btn");
+  if (currentIndex === questions.length - 1) {
+    nextBtn.textContent = "結果を見る 🎉";
+  } else {
+    nextBtn.textContent = "次の問題 ▶";
+  }
 }
 
 function getEntries(side) {
@@ -327,7 +371,6 @@ function checkAnswer() {
   const userDebit = getEntries("debit");
   const userCredit = getEntries("credit");
 
-  // 旧フォーマット（オブジェクト単体）と新フォーマット（配列）の両方に対応
   const correctDebit = Array.isArray(q.debit) ? q.debit : [q.debit];
   const correctCredit = Array.isArray(q.credit) ? q.credit : [q.credit];
 
@@ -350,6 +393,10 @@ function checkAnswer() {
   if (isDebitOk && isCreditOk) {
     resultBox.className = "result-box correct";
     resultBox.innerHTML = `<strong>正解です！ 🎉</strong><br>${q.explanation || ""}`;
+    if (!answeredQuestions.has(currentIndex)) {
+      correctCount++;
+      answeredQuestions.add(currentIndex);
+    }
   } else {
     resultBox.className = "result-box wrong";
     const debitText = correctDebit.map(d => `(${d.account}: ${d.amount.toLocaleString()}円)`).join(" ");
@@ -361,14 +408,35 @@ function checkAnswer() {
       貸方: ${creditText}<br><br>
       【解説】<br>${q.explanation || ""}
     `;
+    answeredQuestions.add(currentIndex);
   }
 }
 
 function prevQuestion() {
-  if (currentIndex > 0) loadQuestion(currentIndex - 1); }
+  if (currentIndex > 0) loadQuestion(currentIndex - 1);
+}
 
 function nextQuestion() {
-  if (currentIndex < questions.length - 1) loadQuestion(currentIndex + 1); }
+  if (currentIndex < questions.length - 1) {
+    loadQuestion(currentIndex + 1);
+  } else {
+    // 最終問題を超えたらクリア画面を表示
+    showClearScreen();
+  }
+}
+
+function showClearScreen() {
+  document.getElementById("quiz-area").style.display = "none";
+  const clearArea = document.getElementById("clear-area");
+  clearArea.style.display = "block";
+
+  const total = questions.length;
+  document.getElementById("score-text").innerHTML = `
+    すべての仕訳問題を完走しました！お疲れ様でした。<br><br>
+    <strong>あなたの成績: ${total} 問中 ${correctCount} 問 正解！</strong><br>
+    ${correctCount === total ? "満点達成！完璧な仕訳力です！ 🏆" : "間違えた問題も復習してマスターを目指しましょう！ 💪"}
+  `;
+}
 
 function loadCustomData() {
   const input = document.getElementById("json-input").value;
@@ -378,7 +446,7 @@ function loadCustomData() {
     questions = data;
     localStorage.setItem("boki_pro_drill_data", JSON.stringify(data));
     alert("新しい問題を読み込みました！");
-    loadQuestion(0);
+    restartQuiz();
   } catch (e) {
     alert("JSONの形式が正しくありません。正しいデータを貼り付けてください。");
   }
@@ -389,3 +457,5 @@ window.onload = init;
 
 </body>
 </html>
+
+
